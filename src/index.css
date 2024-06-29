@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input-style {
+    @apply w-full text-blue-50 px-4 py-2 bg-gray-600;
+  }
+  .btn-atyle {
+    @apply bg-slate-400 text-white px-1 rounded-[0.4rem] py-1 text-xs;
+  }
+  .th-style {
+    @apply border-2 bg-gray-300 border-gray-600;
+  }
+  .td-style {
+    @apply bg-gray-200 border-gray-500 border-2;
+  }
+}
