@@ -3,10 +3,13 @@ import { useReducer, useEffect } from "react";
 import axios from "axios";
 import { TBook, TAction } from "../types.ts";
 
-async function getAllBook(): Promise<TBook[] | null> {
+export async function getAllBook(
+  limit: number,
+  offset: number
+): Promise<TBook[] | null> {
   try {
     const response = await axios(
-      "https://books-api-rsnz.onrender.com/api/books"
+      `https://books-api-rsnz.onrender.com/api/books?limit=${limit}&offset=${offset}`
     );
     return response.data.data;
   } catch (error) {
@@ -19,7 +22,7 @@ export function useLocalStorage(): [TBook[] | null, React.Dispatch<TAction>] {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getAllBook();
+      const data = await getAllBook(5, 0);
       if (data === null) {
         dispatch({
           type: "set books error",

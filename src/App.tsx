@@ -1,6 +1,6 @@
 import { ChangeEvent, useState, useEffect } from "react";
 import Form from "./components/Form";
-import { useLocalStorage } from "./hooks/useLocalStorage";
+import { useLocalStorage, getAllBook } from "./hooks/useLocalStorage";
 import Book from "./components/Book";
 import axios from "axios";
 import { TBook, TEdit } from "./types.ts";
@@ -41,7 +41,7 @@ function App() {
   });
   const [books, dispatch] = useLocalStorage();
   const [searchTitle, setSearchTitle] = useState("");
-
+  const [page, setPage] = useState(1);
   useEffect(() => {
     if (isEdit.edit) {
       const dataToEdit: TBook | undefined = books?.find(
@@ -107,6 +107,7 @@ function App() {
               })
                 .then((data) => {
                   console.log(data?.data?.data[0].id);
+
                   dispatch({
                     type: "add-note",
                     payload: data?.data?.data[0],
@@ -143,6 +144,44 @@ function App() {
             </thead>
             <tbody>{booksElems}</tbody>
           </table>
+          <div className="w-full flex justify-between my-4">
+            <button
+              onClick={async () => {
+                try {
+                  const data = await getAllBook(5, page * 5);
+                  if (data !== null) {
+                    dispatch({ type: "set books", payload: data });
+                    if (page > 0) {
+                      setPage((prevPage) => prevPage - 1);
+                    }
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
+              className="bg-blue-400 text-white py-1 px-6 hover:bg-slate-500 rounded-md"
+            >
+              prev
+            </button>
+            <button
+              onClick={async () => {
+                try {
+                  const data = await getAllBook(5, page * 5);
+                  if (data !== null) {
+                    dispatch({ type: "set books", payload: data });
+                    if (data?.length === 5) {
+                      setPage((prevPage) => prevPage + 1);
+                    }
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
+              }}
+              className="bg-blue-400 text-white py-1 px-6 hover:bg-slate-500 rounded-md"
+            >
+              next
+            </button>
+          </div>
         </div>
       </div>
     </div>
