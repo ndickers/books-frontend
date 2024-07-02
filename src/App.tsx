@@ -106,13 +106,14 @@ function App() {
                 year: Number(formData.year),
               })
                 .then((data) => {
-                  console.log(data?.data?.data[0].id);
-
-                  dispatch({
-                    type: "add-note",
-                    payload: data?.data?.data[0],
-                  });
-                  setFormData({ title: "", author: "", year: 0 });
+                  const res = data;
+                  if (res !== undefined) {
+                    dispatch({
+                      type: "add-note",
+                      payload: res.data?.data[0],
+                    });
+                    setFormData({ title: "", author: "", year: 0 });
+                  }
                 })
                 .catch((error) => {
                   alert("Unable to add note");
