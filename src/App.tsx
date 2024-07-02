@@ -90,7 +90,8 @@ function App() {
             e.preventDefault();
             if (isEdit.edit && isEdit.id !== null) {
               updateData(isEdit.id, formData).then((data) => {
-                if (data !== null) {
+                const res = data;
+                if (res !== undefined) {
                   dispatch({
                     type: "edit book",
                     payload: { id: Number(isEdit.id), data: formData },
